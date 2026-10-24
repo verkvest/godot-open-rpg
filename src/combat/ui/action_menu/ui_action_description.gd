@@ -21,5 +21,7 @@ class_name UIActionDescription extends MarginContainer
 
 
 func _ready() -> void:
+	_description_label.add_theme_font_size_override("font_size", 40)
+	custom_minimum_size.y = 88
 	if not Engine.is_editor_hint():
 		hide()

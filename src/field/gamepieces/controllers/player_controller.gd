@@ -70,26 +70,28 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action_pressed("ui_up"):
-			_last_input_direction = Vector2.UP
-			if _gamepiece.is_moving():	stop_moving()
-			else:	move_to_pressed_key(Vector2.UP)
-			
-		elif event.is_action_pressed("ui_down"):
-			_last_input_direction = Vector2.DOWN
-			if _gamepiece.is_moving():	stop_moving()
-			else:	move_to_pressed_key(Vector2.DOWN)
-			
-		elif event.is_action_pressed("ui_left"):
-			_last_input_direction = Vector2.LEFT
-			if _gamepiece.is_moving():	stop_moving()
-			else:	move_to_pressed_key(Vector2.LEFT)
-			
-		elif event.is_action_pressed("ui_right"):
-			_last_input_direction = Vector2.RIGHT
-			if _gamepiece.is_moving():	stop_moving()
-			else:	move_to_pressed_key(Vector2.RIGHT)
+	# Keys, the on-screen pad, and a gamepad all share the ui_* actions.
+	# Echoes are ignored so a held key does not cancel the step it just started.
+	if not is_active or event.is_echo():
+		return
+	
+	var direction := Vector2.ZERO
+	if event.is_action_pressed("ui_up"):
+		direction = Vector2.UP
+	elif event.is_action_pressed("ui_down"):
+		direction = Vector2.DOWN
+	elif event.is_action_pressed("ui_left"):
+		direction = Vector2.LEFT
+	elif event.is_action_pressed("ui_right"):
+		direction = Vector2.RIGHT
+	else:
+		return
+	
+	_last_input_direction = direction
+	if _gamepiece.is_moving():
+		stop_moving()
+	else:
+		move_to_pressed_key(direction)
 
 
 func move_along_path(value: Array[Vector2i]) -> void:

@@ -80,6 +80,7 @@
 [ext_resource type="Resource" uid="uid://bwjallq2c71rq" path="res://overworld/maps/opening_cutscene.dtl" id="68_jcriq"]
 [ext_resource type="Script" uid="uid://i6j3l72wljdc" path="res://src/combat/combat.gd" id="69_meyff"]
 [ext_resource type="Script" uid="uid://diexbgvrksk2k" path="res://addons/dialogic/Resources/flex_vector.gd" id="72_mcuvm"]
+[ext_resource type="Script" path="res://src/mobile/win_screen.gd" id="90_winsc"]
 
 [sub_resource type="Animation" id="Animation_y8463"]
 length = 0.001
@@ -308,7 +309,9 @@ _data = {
 }
 
 [sub_resource type="LabelSettings" id="LabelSettings_dkg5i"]
-font_size = 128
+font = ExtResource("21_r13nn")
+font_size = 92
+font_color = Color(0.98, 0.9, 0.62, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_giaot"]
 size = Vector2(14, 23)
@@ -671,6 +674,7 @@ metadata/_edit_group_ = true
 libraries/ = SubResource("AnimationLibrary_d6ycm")
 
 [node name="WinScreen" type="CanvasLayer" parent="Field/Map/Forest/Gamepieces/Ghost/AnimationPlayer" unique_id=1108338960]
+script = ExtResource("90_winsc")
 
 [node name="ColorRect" type="ColorRect" parent="Field/Map/Forest/Gamepieces/Ghost/AnimationPlayer/WinScreen" unique_id=1951441028]
 visible = false
@@ -697,14 +701,15 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Field/Map/Forest/Gamepieces/Ghost/AnimationPlayer/WinScreen/ColorRect/VBoxContainer/VBoxContainer" unique_id=1193689192]
 layout_mode = 2
-text = "THANK YOU FOR PLAYING!"
+text = "THE FEN IS QUIET"
+horizontal_alignment = 1
 label_settings = SubResource("LabelSettings_dkg5i")
 
 [node name="Label2" type="Label" parent="Field/Map/Forest/Gamepieces/Ghost/AnimationPlayer/WinScreen/ColorRect/VBoxContainer/VBoxContainer" unique_id=1944146391]
-custom_minimum_size = Vector2(800, 0)
+custom_minimum_size = Vector2(1200, 0)
 layout_mode = 2
-text = "Find more info or ways to help out at
-github.com/gdquest-demos/godot-open-rpg!"
+text = "You reached the one who was waiting.
+Thank you for playing Quillfen."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -811,16 +816,16 @@ one_shot = true
 [node name="UI" type="CanvasLayer" parent="." unique_id=1642469067]
 
 [node name="Inventory" type="HBoxContainer" parent="UI" unique_id=1222421118]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -104.0
-offset_right = -1536.0
-offset_bottom = -88.0
-grow_horizontal = 2
-grow_vertical = 0
-scale = Vector2(5, 5)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 420.0
+offset_bottom = 56.0
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(3.5, 3.5)
 alignment = 1
 script = ExtResource("34_tk01t")
 metadata/_edit_group_ = true
@@ -845,11 +850,12 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -96.0
+offset_top = -340.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/margin_left = 150
-theme_override_constants/margin_right = 150
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 20
 
 [node name="BoxBack" type="ColorRect" parent="UI/DialogueLayout/BoxMargins" unique_id=286197450]
 layout_mode = 2
@@ -858,16 +864,16 @@ color = Color(0.14902, 0.168627, 0.266667, 1)
 [node name="TextMargins" type="MarginContainer" parent="UI/DialogueLayout/BoxMargins" unique_id=693286225]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 64
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
 
 [node name="DialogueText" type="RichTextLabel" parent="UI/DialogueLayout/BoxMargins/TextMargins" unique_id=2142955034 node_paths=PackedStringArray("textbox_root")]
 clip_contents = false
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("21_r13nn")
-theme_override_font_sizes/normal_font_size = 96
+theme_override_font_sizes/normal_font_size = 64
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
@@ -899,7 +905,7 @@ layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.14902, 0.168627, 0.266667, 1)
 theme_override_constants/outline_size = 24
 theme_override_fonts/font = ExtResource("21_r13nn")
-theme_override_font_sizes/font_size = 96
+theme_override_font_sizes/font_size = 52
 text = "Character Name"
 vertical_alignment = 1
 script = ExtResource("19_lpxfg")

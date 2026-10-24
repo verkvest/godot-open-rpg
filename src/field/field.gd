@@ -15,6 +15,13 @@ extends Node2D
 func _ready() -> void:
 	randomize()
 	
+	if OS.get_environment("QUILLFEN_SKIP_INTRO") == "1":
+		opening_cutscene = null
+	
+	# Returning from the ending leaves this static lock set. Clear it before the new game.
+	if Cutscene._is_cutscene_in_progress:
+		Cutscene._is_cutscene_in_progress = false
+	
 	# Assign proper controllers to player gamepieces whenever they change.
 	Player.gamepiece_changed.connect(
 		func _on_player_gp_changed() -> void:

@@ -23,6 +23,8 @@ var is_active: = false:
 
 func _ready() -> void:
 	is_active = false
+	add_to_group("touch_action_menu")
+	add_theme_constant_override("separation", 18)
 
 
 # Capture any input events that will signal going "back" in the menu hierarchy.
@@ -72,8 +74,10 @@ func setup(action_list: Array[BattlerAction]) -> void:
 			first_button.focus_neighbor_top = first_button.get_path_to(last_button)
 			last_button.focus_neighbor_bottom = last_button.get_path_to(first_button)
 	
-	# Wait a frame for the menu elements to be setup...
+	# Wait for the action buttons to settle their touch sizes.
 	await get_tree().process_frame
+	await get_tree().process_frame
+	_anchor_bottom_right()
 	
 	# ...then place the menu cursor - without tweening its position - at the first entry...
 	if first_button != null:
@@ -83,7 +87,27 @@ func setup(action_list: Array[BattlerAction]) -> void:
 	
 	# ...and finally activate the menu for player input.
 	show()
+	_anchor_bottom_right()
 	set_process_unhandled_input(true)
+
+
+func _anchor_bottom_right() -> void:
+	var host := get_parent() as Control
+	if host and host.size.length() < 8.0:
+		var menus := host.get_parent() as Control
+		if menus:
+			reparent(menus)
+	var right := 36.0
+	var bottom := 28.0
+	if is_instance_valid(TouchControls):
+		right = TouchControls.insets.z + 36.0
+		bottom = TouchControls.insets.w + 28.0
+	set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	var menu_size := get_combined_minimum_size()
+	offset_right = -right
+	offset_bottom = -bottom
+	offset_left = offset_right - maxf(menu_size.x, 560.0)
+	offset_top = offset_bottom - maxf(menu_size.y, 156.0)
 
 
 # Moves the [UIMenuCursor] to the focused entry. Derivative menus may want to add additional
