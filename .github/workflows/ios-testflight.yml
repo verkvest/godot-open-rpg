@@ -44,7 +44,9 @@ jobs:
           X=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | grep -vi beta | sort -V | tail -1)
           [ -n "$X" ] && sudo xcode-select -s "$X"
           xcodebuild -version
-          python3 -m pip install --user pyjwt cryptography
+          python3 -m venv "$RUNNER_TEMP/asc-py"
+          "$RUNNER_TEMP/asc-py/bin/pip" install pyjwt cryptography
+          echo "$RUNNER_TEMP/asc-py/bin" >> "$GITHUB_PATH"
 
       - name: Install Godot ${{ env.GODOT_VERSION }}
         if: env.HAS_KEY == 'true'

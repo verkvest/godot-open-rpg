@@ -17,6 +17,9 @@ jobs:
     timeout-minutes: 90
     permissions:
       contents: read
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
     steps:
       - uses: actions/checkout@v4
 
@@ -25,14 +28,18 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - uses: android-actions/setup-android@v3
-
       - name: Android SDK 36
         run: |
           set -euo pipefail
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager --install "platforms;android-36" "build-tools;36.1.0" "platform-tools" "ndk;29.0.14206865"
-          sdkmanager --list_installed
+          if [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+            SM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          else
+            SM="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort | tail -1)"
+          fi
+          [ -n "$SM" ] && [ -x "$SM" ]
+          yes | "$SM" --sdk_root="$ANDROID_HOME" --licenses >/dev/null || true
+          "$SM" --sdk_root="$ANDROID_HOME" --install "platforms;android-36" "build-tools;36.1.0" "platform-tools" "ndk;29.0.14206865"
+          "$SM" --sdk_root="$ANDROID_HOME" --list_installed
 
       - name: Install Godot ${{ env.GODOT_VERSION }}
         run: |
