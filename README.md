@@ -1,8 +1,14 @@
-# Godot 4 Open RPG
+# Quillfen
+
+Quillfen is a short landscape turn-based tale for phones, built on the GDQuest Open RPG demo (MIT). The shipped app name is **Quillfen**. Bundle id on iOS and Android: `es.verkvest.quillfen`.
+
+Touch: tap a tile to walk, or use the on-screen pad. Tap a character to talk, and tap anywhere to advance dialogue. Battle commands are large buttons.
+
+Godot **4.7.2**, Compatibility renderer. Workflows: `ios-testflight` (export, archive, TestFlight) and `android` (release AAB and APK, target SDK 36, plus phone-viewport screenshots).
 
 ![Godot Open RPG banner](media/Open-RPG.png)
 
-OpenRPG is a a demo showing how to create a classical turn-based RPG in Godot 4. It's currently a work-in-progress.
+The underlying project is a demo showing how to create a classical turn-based RPG in Godot 4. It's a short, complete slice: title, a town, a battle, and an ending.
 
 **You need to use Godot 4.7.2, or newer, to open the project!** You can find the official releases on the [Godot website](https://godotengine.org/).
 

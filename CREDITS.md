@@ -46,8 +46,27 @@ URL: https://kenney.nl/assets/tiny-town & https://kenney.nl/assets/tiny-dungeon 
 License: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)  
   
 Tiny Town - Animated Characters
-Author: food_please; derived from Tiny Town (Kenney) & DawnLike (DragonDePlatino)  
-URL: N/A  
-License: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)  
-  
-Please see the [license](LICENSE).
+Author: food_please; derived from Tiny Town (Kenney, CC0) and DawnLike
+URL: N/A
+License: Kenney portions [CC0](https://creativecommons.org/publicdomain/zero/1.0/). DawnLike portions [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by DragonDePlatino, palette by DawnBringer.
+
+Kenney Pixel
+Author: Kenney
+License: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+
+Source Code Pro Bold
+Author: Adobe
+License: SIL Open Font License 1.1
+
+Dialogue typing sounds
+Author: Tim Krief
+License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
+Godot Engine
+License: MIT
+
+Dialogic
+Authors: Jowan, Emi, Cake, Zak, and others
+License: MIT
+
+The game code is MIT (see LICENSE). Full notices are in THIRD_PARTY_LICENSES.md.

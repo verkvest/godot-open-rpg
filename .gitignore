@@ -2,7 +2,12 @@
 # Godot-specific ignores
 .import/
 export.cfg
-export_presets.cfg
+# export_presets.cfg is committed. Keystore passwords stay in .godot/export_credentials.cfg.
+
+# Local build outputs
+/build/
+/android/
+*.keystore
 
 # Imported translations (automatically generated from CSV files)
 *.translation

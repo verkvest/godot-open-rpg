@@ -76,9 +76,38 @@ var _secondary_cursors: = {}
 
 func _ready() -> void:
 	assert(!targets.is_empty(), "The target cursor needs a non-empty target array!")
+	add_to_group("touch_targeting")
 	
 	hide()
 	_cursor = _create_cursor_over_battler(_current_target)
+
+
+func _input(event: InputEvent) -> void:
+	if targets_all or not (event is InputEventMouseButton):
+		return
+	var mouse := event as InputEventMouseButton
+	if not mouse.pressed or mouse.button_index != MOUSE_BUTTON_LEFT:
+		return
+	var hovered := get_viewport().gui_get_hovered_control()
+	if hovered is BaseButton:
+		return
+	
+	var best: Battler = null
+	var best_distance := 220.0
+	for battler in targets:
+		if battler == null or battler.anim == null:
+			continue
+		var distance := mouse.position.distance_to(battler.anim.global_position)
+		if distance < best_distance:
+			best_distance = distance
+			best = battler
+	if best == null:
+		return
+	_current_target = best
+	var selection: Array[Battler] = [best]
+	targets_selected.emit(selection)
+	queue_free()
+	get_viewport().set_input_as_handled()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -95,20 +124,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		targets_selected.emit(INVALID_TARGETS)
 		queue_free()
 	
-	# Other keypresses may indicate that the player is selecting another target.
-	elif event is InputEventKey:
-		# Don't move anything if ALL targets are currently being targeted.
-		if targets_all:
-			return
-		
+	# Direction keys and the on-screen pad move the highlight. A tap confirms.
+	elif not targets_all and not event.is_echo():
 		var direction: = Vector2.ZERO
-		if event.is_action_released("ui_left"):
+		if event.is_action_pressed("ui_left"):
 			direction = Vector2.LEFT
-		elif event.is_action_released("ui_right"):
+		elif event.is_action_pressed("ui_right"):
 			direction = Vector2.RIGHT
-		elif event.is_action_released("ui_up"):
+		elif event.is_action_pressed("ui_up"):
 			direction = Vector2.UP
-		elif event.is_action_released("ui_down"):
+		elif event.is_action_pressed("ui_down"):
 			direction = Vector2.DOWN
 		
 		if not direction.is_equal_approx(Vector2.ZERO):
