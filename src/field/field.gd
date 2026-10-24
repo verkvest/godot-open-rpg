@@ -14,6 +14,7 @@ extends Node2D
 
 func _ready() -> void:
 	randomize()
+	_add_backdrop()
 	
 	if OS.get_environment("QUILLFEN_SKIP_INTRO") == "1":
 		opening_cutscene = null
@@ -50,8 +51,33 @@ func _ready() -> void:
 	CombatEvents.combat_finished.connect(func(_is_victory): show())
 	
 	Camera.scale = scale
+	Camera.enabled = true
 	Camera.make_current()
 	Camera.reset_position()
 	
 	if opening_cutscene:
 		opening_cutscene.run.call_deferred()
+
+
+func _add_backdrop() -> void:
+	# Empty cells inside the board are transparent. Without this they show the
+	# engine clear color, which is the grey band around a tall phone viewport.
+	var layer := CanvasLayer.new()
+	layer.layer = -100
+	var fill := ColorRect.new()
+	fill.color = Color(0.278, 0.624, 0.290)
+	fill.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(fill)
+	add_child(layer)
+	var fit := func() -> void:
+		fill.size = get_viewport_rect().size
+	get_viewport().size_changed.connect(fit)
+	fit.call_deferred()
+
+
+func _exit_tree() -> void:
+	# The autoload outlives this scene. Leaving it current keeps drag-center
+	# applied to the title and credits, which are drawn on the root canvas.
+	if is_instance_valid(Camera):
+		Camera.enabled = false

@@ -117,10 +117,12 @@ jobs:
         run: |
           set -euo pipefail
           godot --headless --path . --import --quit || godot --headless --path . --import
-          xvfb-run -a -s "-screen 0 2560x1440x24" \
+          xvfb-run -a -s "-screen 0 2800x2800x24" \
             godot --path . --audio-driver Dummy res://src/mobile/screenshot_runner.tscn
-          test -s build/screenshots/title.png
-          test -s build/screenshots/gameplay.png
+          for size in 1170x2532 2532x1170 1179x2556 750x1334 2400x1080; do
+            test -s "build/screenshots/title-${size}.png"
+            test -s "build/screenshots/gameplay-${size}.png"
+          done
           file build/screenshots/*.png
 
       - uses: actions/upload-artifact@v4

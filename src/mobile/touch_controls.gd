@@ -163,6 +163,11 @@ func _apply_layout() -> void:
 	_layout_hud()
 
 
+func viewport_insets() -> Vector4:
+	_refresh_insets()
+	return insets
+
+
 func _refresh_insets() -> void:
 	var window := Vector2(DisplayServer.window_get_size())
 	if window.x < 2.0 or window.y < 2.0:
@@ -194,8 +199,11 @@ func _layout_hud() -> void:
 	
 	var inventory := get_tree().root.find_child("Inventory", true, false) as Control
 	if inventory:
+		inventory.set_anchors_preset(Control.PRESET_TOP_LEFT)
 		inventory.offset_left = insets.x + 28.0
 		inventory.offset_top = insets.y + 20.0
+		inventory.offset_right = inventory.offset_left + 420.0
+		inventory.offset_bottom = inventory.offset_top + 56.0
 	
 	var battlers := get_tree().root.find_child("PlayerBattlerList", true, false) as Control
 	if battlers:

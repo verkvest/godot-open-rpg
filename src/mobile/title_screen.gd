@@ -5,9 +5,14 @@ const GAME_SCENE := "res://src/main.tscn"
 const CREDITS_SCENE := "res://src/mobile/credits_screen.tscn"
 
 
+var _margin: MarginContainer
+
+
 func _ready() -> void:
 	add_to_group("hide_touch_controls")
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_offsets_preset(Control.PRESET_FULL_RECT)
+	get_viewport().size_changed.connect(_apply_safe_margins)
 	
 	var background := ColorRect.new()
 	background.color = Color(0.04, 0.12, 0.14)
@@ -22,18 +27,15 @@ func _ready() -> void:
 	wash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(wash)
 	
-	var margin := MarginContainer.new()
-	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left", 72)
-	margin.add_theme_constant_override("margin_right", 72)
-	margin.add_theme_constant_override("margin_top", 36)
-	margin.add_theme_constant_override("margin_bottom", 36)
-	add_child(margin)
+	_margin = MarginContainer.new()
+	_margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(_margin)
+	_apply_safe_margins()
 	
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 48)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	margin.add_child(row)
+	_margin.add_child(row)
 	
 	var mark := TextureRect.new()
 	mark.texture = load("res://assets/gui/icons/quillfen_1024.png")
@@ -94,6 +96,18 @@ func _ready() -> void:
 	
 	if is_instance_valid(Music):
 		Music.play(load("res://assets/music/the_fun_run.mp3"), 0.6)
+
+
+func _apply_safe_margins() -> void:
+	if _margin == null:
+		return
+	var safe := Vector4.ZERO
+	if is_instance_valid(TouchControls):
+		safe = TouchControls.viewport_insets()
+	_margin.add_theme_constant_override("margin_left", int(safe.x) + 72)
+	_margin.add_theme_constant_override("margin_right", int(safe.z) + 72)
+	_margin.add_theme_constant_override("margin_top", int(safe.y) + 36)
+	_margin.add_theme_constant_override("margin_bottom", int(safe.w) + 36)
 
 
 func _on_play() -> void:

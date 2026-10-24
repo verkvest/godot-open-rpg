@@ -31,6 +31,20 @@ func _ready() -> void:
 	MobileUI.style_button(button, 48)
 	button.pressed.connect(_on_title)
 	box.add_child(button)
+	get_viewport().size_changed.connect(_apply_safe_area)
+	_apply_safe_area()
+
+
+func _apply_safe_area() -> void:
+	var frame := $ColorRect/VBoxContainer as Control
+	frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var safe := Vector4.ZERO
+	if is_instance_valid(TouchControls):
+		safe = TouchControls.viewport_insets()
+	frame.offset_left = safe.x + 24.0
+	frame.offset_top = safe.y + 24.0
+	frame.offset_right = -safe.z - 24.0
+	frame.offset_bottom = -safe.w - 24.0
 
 
 func _on_title() -> void:
