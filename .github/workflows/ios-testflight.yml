@@ -92,8 +92,10 @@ jobs:
           KEYFILE=~/.appstoreconnect/private_keys/AuthKey_${APPSTORE_API_KEY_ID}.p8
           if printf '%s' "$APPSTORE_API_KEY_P8" | grep -q "BEGIN PRIVATE KEY"; then
             printf '%s\n' "$APPSTORE_API_KEY_P8" > "$KEYFILE"
+          elif printf '%s' "$APPSTORE_API_KEY_P8" | base64 --decode > "$KEYFILE" 2>/dev/null; then
+            :
           else
-            printf '%s' "$APPSTORE_API_KEY_P8" | base64 --decode > "$KEYFILE"
+            printf '%s' "$APPSTORE_API_KEY_P8" | base64 -D > "$KEYFILE"
           fi
           chmod 600 "$KEYFILE"
           echo "KEYFILE=$KEYFILE" >> "$GITHUB_ENV"

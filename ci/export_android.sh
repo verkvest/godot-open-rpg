@@ -74,6 +74,17 @@ open(path, "w", encoding="utf-8").write("\n".join(out) + "\n")
 print("editor settings", path)
 PY
 
+TEMPLATE_DIR="${GODOT_TEMPLATES:-$HOME/.local/share/godot/export_templates/4.7.2.stable}"
+SRC_ZIP="$TEMPLATE_DIR/android_source.zip"
+test -f "$SRC_ZIP"
+rm -rf android
+mkdir -p android/build
+unzip -q "$SRC_ZIP" -d android/build
+printf '%s\n' "4.7.2.stable" > android/.build_version
+: > android/build/.gdignore
+test -f android/build/build.gradle
+echo "Installed Android build template from $SRC_ZIP"
+
 MODE="debug"
 if [ -n "${ANDROID_KEYSTORE_B64:-}" ] && [ -n "${ANDROID_KEYSTORE_PASSWORD:-}" ] && [ -n "${ANDROID_KEY_ALIAS:-}" ]; then
   MODE="release"
